@@ -11,13 +11,14 @@
 # Make sure args are supplied
 if [ $# -eq 0 ]
   then
-    err "ERR | -FQDN -HOSTNAME -SSH_PORT"
+    err "ERR | -FQDN -HOSTNAME -SSH_PORT -CERTBOT_EMAIL"
     exit 1
 fi
 
 FQDN=$1
 HOSTNAME=$2
 SSH_PORT=$3
+CERTBOT_EMAIL=$4
 PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 63)
 
 apt-get update && apt-get -y upgrade
