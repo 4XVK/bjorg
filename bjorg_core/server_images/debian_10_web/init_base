@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+HISTSIZE=0
+set +o history
 #
 # This script kickstarts the build process for a basic server instance.
 #
@@ -45,12 +47,15 @@ adduser "$HOSTNAME" --gecos "" --disabled-password
 adduser "$HOSTNAME" sudo
 echo "$HOSTNAME":"$PASSWORD" | chpasswd
 
-# Give user an sshkey, some initial dirs
-mkdir /home/"$HOSTNAME"/.ssh /home/"$HOSTNAME"/.bjorg
+# Give user an sshkey, and transplant bjorg core
+mkdir /home/"$HOSTNAME"/.ssh
 cp -a /root/.ssh/. /home/"$HOSTNAME"/.ssh/
+# Move bjorg_core to users $HOME dir
+# TODO consider removing /servers/ dir
+cp -a /root/bjorg-master/bjorg_core /home/"$HOSTNAME"
 # Leave pw crumb for superuser needs
-echo "$PASSWORD" > /home/"$HOSTNAME"/.bjorg/auth
-chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/.ssh /home/"$HOSTNAME"/.bjorg
+echo "$PASSWORD" > /home/"$HOSTNAME"/bjorg_core/auth
+chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/.ssh /home/"$HOSTNAME"/bjorg_core
 
 # Lock SSH access down
 file=/etc/ssh/sshd_config
