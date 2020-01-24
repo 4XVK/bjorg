@@ -23,8 +23,13 @@ SSH_PORT=$3
 CERTBOT_EMAIL=$4
 PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 63)
 
+# ALTER SYS HEADERS for iptables-persistent installation
+echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
+
 apt-get update && apt-get -y upgrade
-apt-get install -y unattended-upgrades build-essential git postgresql postgresql-contrib
+apt-get install -y unattended-upgrades build-essential git postgresql postgresql-contrib nginx \
+iptables-persistent certbot python-certbot-nginx
 
 
 # Get public ipv6/4 on eth0
@@ -74,13 +79,7 @@ sed -i 's/PORTGOESHERE/'"$SSH_PORT"'/g' templates/ip6tables_web
 awk '1' templates/ip4tables_web | iptables-restore
 awk '1' templates/ip6tables_web | ip6tables-restore
 
-# config for
-echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
-echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
-apt-get install -y iptables-persistent
-
 # Install nginx and setup default site
-apt-get install -y nginx
 cat templates/nginx.default > /etc/nginx/sites-available/default
 sed -i 's/server_name _.*/server_name '"$FQDN"';/' /etc/nginx/sites-available/default
 cat templates/index.html > /var/www/html/index.html
@@ -89,14 +88,12 @@ service nginx start
 
 # Install certbot for ssl
 # Try for --hsts and --uir even though they aren't currently supported with the nginx module
-apt-get install -y certbot python-certbot-nginx
 certbot -n --agree-tos --email "$CERTBOT_EMAIL" --authenticator webroot -w /var/www/html/ --installer nginx --redirect --hsts --uir --domain "$FQDN"
 
 # Setup postgresql with a password accessible account
 echo postgres:"$PASSWORD" | chpasswd
-# Use the system postgres user to create a database user
-# who can log in with a password.
-echo "Attempting to create a normal user"
+# Use the system postgres user to create a database user who can log in with a password.
+# running sudo'd commands spits permission errors but they are expected...
 echo "$PASSWORD" | sudo -s -u postgres <<EOF
 psql -c "CREATE USER $HOSTNAME WITH PASSWORD '$PASSWORD'"
 psql -c "ALTER USER $HOSTNAME WITH SUPERUSER CREATEDB CREATEROLE"
