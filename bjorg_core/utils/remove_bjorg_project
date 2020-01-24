@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+HISTSIZE=0
+set +o history
+#
+# This script removes project directories from project_core.
+# It should be noted that this does not uninstall the project. Uninstall should happen via app_pkg scripts in project
+# previous to the project being deleted.
+#
+# Built for...
+# OS: debian 10
+
+# Make sure args are supplied
+if [ $# -eq 0 ]
+  then
+    echo " -PROJECT_NAME"
+    exit 1
+fi
+
+# Catch incoming args
+PROJECT_NAME=$1
+
+# Set some messy path variables
+# This assumes you are where we think you are...
+BJORG_CORE=${PWD%/*}
+PROJECT_CORE="$BJORG_CORE"/project_core
+PROJECT_PATH="$PROJECT_CORE"/"$PROJECT_NAME"
+
+echo "pseudo deleting path: $PROJECT_PATH"
+echo "deleting things this way seems unsafe, no?"

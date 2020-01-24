@@ -34,10 +34,10 @@ mkdir "$PROJECT_SOURCE_PATH"
 # probably need more thought on the config handling...
 touch "$PROJECT_PATH"/bjorg.ini
 cat <<EOT > "$PROJECT_PATH"/bjorg.ini
-project_name=$PROJECT_NAME
-fqdn=$FQDN
-git_url=$GIT_URL
-contact_email=$CONTACT_EMAIL
+PROJECT_NAME=$PROJECT_NAME
+FQDN=$FQDN
+GIT_URL=$GIT_URL
+CONTACT_EMAIL=$CONTACT_EMAIL
 EOT
 
 # clone project and extract bjorg components
