@@ -24,7 +24,7 @@ CERTBOT_EMAIL=$4
 PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 63)
 
 apt-get update && apt-get -y upgrade
-apt-get install -y unattended-upgrades build-essential git
+apt-get install -y unattended-upgrades build-essential git postgresql postgresql-contrib
 
 
 # Get public ipv6/4 on eth0
@@ -92,12 +92,11 @@ service nginx start
 apt-get install -y certbot python-certbot-nginx
 certbot -n --agree-tos --email "$CERTBOT_EMAIL" --authenticator webroot -w /var/www/html/ --installer nginx --redirect --hsts --uir --domain "$FQDN"
 
-# Install and setup postgresql with a password accessible account
-apt-get install -y postgresql postgresql-contrib
+# Setup postgresql with a password accessible account
 echo postgres:"$PASSWORD" | chpasswd
-
 # Use the system postgres user to create a database user
 # who can log in with a password.
+echo "Attempting to create a normal user"
 echo "$PASSWORD" | sudo -s -u postgres <<EOF
 psql -c "CREATE USER $HOSTNAME WITH PASSWORD '$PASSWORD'"
 psql -c "ALTER USER $HOSTNAME WITH SUPERUSER CREATEDB CREATEROLE"

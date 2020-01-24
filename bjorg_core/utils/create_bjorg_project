@@ -11,7 +11,7 @@ set +o history
 # Make sure args are supplied
 if [ $# -eq 0 ]
   then
-    err "ERR | -PROJECT_NAME -FQDN -GIT_URL -CONTACT_EMAIL"
+    echo " -PROJECT_NAME -FQDN -GIT_URL -CONTACT_EMAIL"
     exit 1
 fi
 
@@ -31,11 +31,14 @@ PROJECT_SOURCE_PATH="$PROJECT_PATH"/src
 # make project directory in project_core with associated conf
 mkdir "$PROJECT_PATH"
 mkdir "$PROJECT_SOURCE_PATH"
-cp -a "$BJORG_CORE"/utils/templates/bjorg.ini "$PROJECT_PATH"
-sed -i 's/<PROJECT_NAME>/'"$PROJECT_NAME"'/g' "$PROJECT_PATH"/bjorg.ini
-sed -i 's/<FQDN>/'"$FQDN"'/g' "$PROJECT_PATH"/bjorg.ini
-sed -i 's/<GIT_URL>/'"$GIT_URL"'/g' "$PROJECT_PATH"/bjorg.ini
-sed -i 's/<CONTACT_EMAIL>/'"$CONTACT_EMAIL"'/g' "$PROJECT_PATH"/bjorg.ini
+# probably need more thought on the config handling...
+touch "$PROJECT_PATH"/bjorg.ini
+cat <<EOT > "$PROJECT_PATH"/bjorg.ini
+project_name=$PROJECT_NAME
+fqdn=$FQDN
+git_url=$GIT_URL
+contact_email=$CONTACT_EMAIL
+EOT
 
 # clone project and extract bjorg components
 git clone "$GIT_URL" "$PROJECT_SOURCE_PATH"
