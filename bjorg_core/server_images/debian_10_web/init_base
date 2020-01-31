@@ -29,7 +29,7 @@ echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-
 
 apt-get update && apt-get -y upgrade
 apt-get install -y unattended-upgrades build-essential git postgresql postgresql-contrib nginx \
-iptables-persistent certbot python-certbot-nginx
+iptables-persistent certbot python-certbot-nginx supervisor
 
 
 # Get public ipv6/4 on eth0
@@ -99,5 +99,8 @@ psql -c "CREATE USER $HOSTNAME WITH PASSWORD '$PASSWORD'"
 psql -c "ALTER USER $HOSTNAME WITH SUPERUSER CREATEDB CREATEROLE"
 psql -c "ALTER ROLE $HOSTNAME SET client_encoding TO 'utf8'"
 EOF
+
+# A crude install of Pipenv
+curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
 
 reboot
