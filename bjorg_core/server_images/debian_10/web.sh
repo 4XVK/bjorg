@@ -2,4 +2,4 @@
 HISTSIZE=0
 set +o history
 
-echo "SETUP UP NGINX NOW OK THANKS"
+echo "SETUP UP WEB NOW OK THANKS"
