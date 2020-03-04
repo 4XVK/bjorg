@@ -39,16 +39,6 @@ apt-get install -y unattended-upgrades build-essential git gnupg autossh
 # Do users stuff
 . users.sh
 
-# Transplant bjorg_core
-cp -a /root/bjorg-master/bjorg_core /home/"$HOSTNAME"
-
-# Give $USER the generically generated password
-echo "$PASSWORD" > /home/"$HOSTNAME"/bjorg_core/env_core/"$HOSTNAME"_auth
-
-# Give $USER an sshkey
-mkdir /home/"$HOSTNAME"/.ssh
-cp -a /root/.ssh/. /home/"$HOSTNAME"/.ssh/
-
 # Lock SSH access down
 . secure_ssh.sh
 
