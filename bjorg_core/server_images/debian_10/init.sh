@@ -7,15 +7,6 @@ set +o history
 #
 # OS: debian 10
 
-basic_single_escape () {
-    # The quoting on this sed command is a bit complex.  Single-quoted strings
-    # don't allow *any* escape mechanism, so they cannot contain a single
-    # quote.  The string sed gets (as argv[1]) is:  s/\(['\]\)/\\\1/g
-    #
-    # Inside a character class, \ and ' are not special, so the ['\] character
-    # class is balanced and contains two characters.
-    echo "$1" | sed 's/\(['"'"'\]\)/\\\1/g'
-}
 
 # Make sure args are supplied
 if [ $# -eq 0 ]
@@ -28,6 +19,7 @@ FQDN=$1
 HOSTNAME=$2
 SSH_PORT=$3
 CERTBOT_EMAIL=$4
+
 PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 63)
 
 apt-get update && apt-get -y upgrade
