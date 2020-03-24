@@ -5,9 +5,9 @@ set +o history
 echo "SETUP UP MYSQL NOW OK THANKS"
 apt install -y mariadb-server
 
-# Create a user for use by web apps with access to most tables
+# Create a nonroot user for use by web apps with access to most tables
 echo "Creating MYSQL user..."
-mysql -e "GRANT ALL ON *.* TO 'webmaster'@'localhost' IDENTIFIED BY '$PASSWORD' WITH GRANT OPTION;"
+mysql -e "GRANT ALL ON *.* TO '$HOSTNAME'@'localhost' IDENTIFIED BY '$PASSWORD' WITH GRANT OPTION;"
 
 # Secure maria from it's dangerous defaults
 echo "Removing anonymous users..."
