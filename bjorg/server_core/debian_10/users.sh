@@ -21,4 +21,4 @@ cp -a /root/.ssh/. /home/"$HOSTNAME"/.ssh/
 
 # Make sure new user is the owner of stuff we transplanted
 chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/bjorg/
-chown -R "$HOSTNAME":"$HOSTNAME" /home/.ssh/
+chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/.ssh/
