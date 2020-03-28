@@ -37,11 +37,12 @@ apt-get install -y unattended-upgrades build-essential git gnupg autossh
 # Activate firewall
 . firewall.sh
 
-read -p "Web? " -n 1 -r
+read -p "Web w/ PHP? " -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   . web.sh
+  . php.sh
 fi
 
 read -p "MySQL? " -n 1 -r
@@ -49,13 +50,6 @@ echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
   . mysql.sh
-fi
-
-read -p "PHP? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-  . php.sh
 fi
 
 read -p "Python? " -n 1 -r
