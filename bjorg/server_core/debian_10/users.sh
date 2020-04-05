@@ -22,3 +22,7 @@ cp -a /root/.ssh/. /home/"$HOSTNAME"/.ssh/
 # Make sure new user is the owner of stuff we transplanted
 chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/bjorg/
 chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/.ssh/
+
+# Generate an ssh key for user
+# TODO consider sending this somewhere?
+su "$HOSTNAME" bash -c 'ssh-keygen -t rsa -b 4096 -o -a 100 -f ~/.ssh/id_rsa -N ""'
