@@ -13,7 +13,7 @@ echo "$HOSTNAME":"$PASSWORD" | chpasswd
 cp -a /root/bjorg-master/bjorg /home/"$HOSTNAME"
 
 # Make password generically available
-echo "$PASSWORD" > /home/"$HOSTNAME"/bjorg/auth_core/"$HOSTNAME"_auth
+echo "$PASSWORD" > /home/"$HOSTNAME"/bjorg/auth_core/local_auth
 
 # Transplant sshkey for user
 mkdir /home/"$HOSTNAME"/.ssh

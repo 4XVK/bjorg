@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+HISTSIZE=0
+set +o history
+
+if [ $# -eq 0 ]
+  then
+    err "ERR | -FQDN -HOSTNAME -SSH_PORT -CERTBOT_EMAIL"
+    exit 1
+fi
+
+TUNNEL_ID=$1
+REMOTE_USER=$2
+REMOTE_HOST=$3
+SSH_PORT=$4
+LOCAL_PORT=$5
+REMOTE_PORT=$6
+
+readonly AUTHENTICATE=$(cat ../auth_core/local_auth)
+
+read -p "Create persistant database tunnel? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+cat <<EOT > ../job_core/"$TUNNEL_ID"
+#!/usr/bin/env bash
+/usr/bin/autossh -nNT -f -o "ServerAliveInterval 10" -o "ServerAliveCountMax 2" $REMOTE_USER@$REMOTE_HOST -p $SSH_PORT -L $REMOTE_PORT:localhost:$LOCAL_PORT
+EOT
+  # allow exe
+  chmod +x ../job_core/"$TUNNEL_ID"
+  # insert cron job
+  . inject_cron "@reboot ~/bjorg/job_core/$TUNNEL_ID"
+  echo "PERSISTANT TUNNEL OPENED \o/"
+fi
