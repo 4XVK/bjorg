@@ -10,7 +10,7 @@ usermod -aG sudo "$HOSTNAME"
 echo "$HOSTNAME":"$PASSWORD" | chpasswd
 
 # Transplant bjorg for user
-cp -a /root/bjorg-master/bjorg /home/"$HOSTNAME"
+mv /root/bjorg-master/bjorg /home/"$HOSTNAME"
 
 # Make password generically available
 echo "$PASSWORD" > /home/"$HOSTNAME"/bjorg/auth_core/local_auth
@@ -24,5 +24,5 @@ chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/bjorg/
 chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/.ssh/
 
 # Generate an ssh key for user
-# TODO consider sending this somewhere?
+# TODO consider sending this somewhere? possibly put a copy in auth_core
 su "$HOSTNAME" bash -c 'ssh-keygen -t rsa -b 4096 -o -a 100 -f ~/.ssh/id_rsa -N ""'

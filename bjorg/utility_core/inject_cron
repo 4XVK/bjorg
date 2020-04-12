@@ -4,7 +4,6 @@ read -d '' CRON_JOBS << EOF
 $1
 EOF
 
-# add cron if necessary
 if [[ ! -z "$CRON_JOBS" ]]
     then
         echo "INSTALLING CRON JOBS..."
