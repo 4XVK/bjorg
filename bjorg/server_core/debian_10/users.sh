@@ -10,7 +10,7 @@ usermod -aG sudo "$HOSTNAME"
 echo "$HOSTNAME":"$PASSWORD" | chpasswd
 
 # Transplant bjorg for user
-mv /root/bjorg-master/bjorg /home/"$HOSTNAME"
+cp -a /root/bjorg-master/bjorg /home/"$HOSTNAME"
 
 # Make password generically available
 echo "$PASSWORD" > /home/"$HOSTNAME"/bjorg/auth_core/local_auth
