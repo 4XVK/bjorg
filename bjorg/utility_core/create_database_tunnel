@@ -29,5 +29,5 @@ EOT
   chmod +x ../job_core/"$TUNNEL_ID"
   # insert cron job
   . inject_cron "@reboot ~/bjorg/job_core/$TUNNEL_ID"
-  echo "PERSISTANT TUNNEL OPENED \o/"
+  echo "PERSISTING TUNNEL OPENED \o/"
 fi
