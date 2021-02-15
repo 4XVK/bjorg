@@ -1,0 +1,6 @@
+zone "FQDN {
+      type NS_TYPE;
+      file "/etc/bind/db.FQDN";
+      allow-query { any; };
+      allow-transfer { NS1_IP; };
+};

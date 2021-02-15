@@ -15,6 +15,7 @@ echo "$HOSTNAME" > /etc/hostname
 cat <<EOT >> /etc/hosts
 
 # public entries
+# TODO add support for subdomains yeah?
 $ipv6_public $HOSTNAME.$FQDN $HOSTNAME
 $ipv4_public $HOSTNAME.$FQDN $HOSTNAME
 EOT

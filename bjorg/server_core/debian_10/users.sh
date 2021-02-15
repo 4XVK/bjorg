@@ -23,6 +23,9 @@ cp -a /root/.ssh/. /home/"$HOSTNAME"/.ssh/
 chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/bjorg/
 chown -R "$HOSTNAME":"$HOSTNAME" /home/"$HOSTNAME"/.ssh/
 
-# Generate an ssh key for user
-# TODO consider sending this somewhere? possibly put a copy in auth_core
+# generate rsa key pair and ed25519 key pairs
 su "$HOSTNAME" bash -c 'ssh-keygen -t rsa -b 4096 -o -a 100 -f ~/.ssh/id_rsa -N ""'
+su "$HOSTNAME" bash -c 'ssh-keygen -t ed25519 -a 100 -f ~/.ssh/id_ed25519 -N ""'
+
+# duplicate key pairs into auth_core
+su "$HOSTNAME" bash -c 'cp ~/.ssh/id_* ~/bjorg/auth_core/'
